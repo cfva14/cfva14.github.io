@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Random Quote Machine</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <style media="screen">
+      .quote-container{
+        position: relative;
+        top: 200px;
+        background-color: white;
+        width: 500px;
+        padding: 50px;
+        border-radius: 10px;
+        margin-left: 50%;
+        transform: translate(-50%);
+      }
+      #quote{
+        font-family: Mono;
+        font-size: 2em;
+      }
+      #author{
+        font-size: 1.2em;
+      }
+      #footerP{
+        margin-left: 50%;
+        transform: translate(-50%);
+        position: absolute;
+        bottom: 10px;
+      }
+    </style>
+    <script type="text/javascript">
+    $(document).ready(function(){
+getQuote();
+var a0 = 0;
+var a1 = 0;
+var a2 = 0;
+$("body").css("background-color", "rgb("+getRandomColor()+","+getRandomColor()+","+getRandomColor()+")");
+$("#button").on("click", function(){
+  getQuote();
+  $("body").css("background-color", "rgb("+getRandomColor()+","+getRandomColor()+","+getRandomColor()+")");
+});
+
+$("#button").on("click", function(){
+  getQuote();
+  $("body").css("background-color", "rgb("+getRandomColor()+","+getRandomColor()+","+getRandomColor()+")");
+});
+});
+
+
+function getRandomColor(){
+return Math.floor(Math.random() * 255);
+};
+
+
+function getQuote(){
+$.ajax({
+    url: 'https://andruxnet-random-famous-quotes.p.mashape.com/?cat=famous',
+    type: 'POST',
+    data: {},
+    dataType: 'json',
+    success: function(data) {
+      $("#quote").html('"' + data.quote + '"');
+      $("a").attr("href", "http://twitter.com/home/?status=\"" + data.quote + "\"   --" +data.author );
+      $("#author").html("-" + data.author);
+    },
+    error: function(err) { alert(err); },
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("X-Mashape-Authorization", "8qwmKDwuGOmshIzKzqlyQ2SpfZ4Tp1zmzUUjsnXvJKscPU0b1Z");
+    }
+  });
+};
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="quote-container">
+            <p id="quote"></p>
+            <p id="author" class="text-right"></p>
+            <div class="row">
+              <div class="col-xs-4">
+                <a href="#" target="_blank"><button id="tweeter">Tweet</button></a>
+              </div>
+              <div class="col-xs-4"></div>
+              <div class="col-xs-4">
+                <button id="button" class="btn">New Quote</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p id="footerP" class="text-center">Random Quote Machine by <a href="http://twitter.com/cfva14">Carlos Valencia</a></p>
+  </body>
+</html>
